@@ -10,7 +10,7 @@ This repository contains a Deep Reinforcement Learning (DQN) implementation for 
 - **Approach**:
   - Extract features using a pretrained **VGG16** network.
   - Agent learns to move a bounding box toward hemorrhage regions using custom reward functions.
-  - Rewards include binary correctness, IoU-based difference, and aspect/area penalties.
+  - Rewards include binary correctness, IoU-based difference, coordinate, and aspect/area penalties.
 
 ---
 
