@@ -77,7 +77,7 @@ To run the models, you'll need to modify the hyperparameters directly in the Pyt
 
 ## Dataset
 
-The project uses CT scan data with hemorrhage annotations. Due to medical data privacy requirements, the dataset is not included in this repository.
+[Dataset information to be updated based on actual dataset used - see paper for details]
 
 ## Hardware Requirements
 
