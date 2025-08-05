@@ -84,7 +84,6 @@ To run the models, you'll need to modify the hyperparameters directly in the Pyt
 - **Development Environment**: High-end GPU cluster with enterprise-grade hardware
 - **Recommended**: High-end GPU with 16GB+ VRAM for efficient training  
 - **Minimum**: CUDA-compatible GPU with 8GB+ VRAM
-- Multi-GPU support implemented for large-scale experiments
 
 **Note**: Training times can be extensive - DQN experiments often required days of computation even on high-end hardware.
 
