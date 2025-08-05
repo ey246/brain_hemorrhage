@@ -1,29 +1,115 @@
-# 🧠 Brain Hemorrhage Detection using Deep Q-Learning
+# Deep Q-Network for Brain Hemorrhage Localization
 
-This repository contains a Deep Reinforcement Learning (DQN) implementation for brain hemorrhage localization in CT scan images. The model uses a CNN-based feature extractor (VGG16) and is trained to iteratively move a bounding box toward the hemorrhage region using reward signals. Unlike traditional CNNs, this approach is well-suited for small datasets and provides interpretable predictions through visible agent trajectories and tunable reward structures.
+A comparative study implementing Deep Q-Network (DQN) reinforcement learning and U-Net segmentation approaches for automated localization of brain hemorrhages in CT scans.
 
----
+## Overview
 
-## 📌 Project Overview
+This project explores the application of reinforcement learning to medical image analysis, specifically focusing on the automated detection and localization of intracranial hemorrhages. We compare a novel DQN-based approach with traditional U-Net segmentation to analyze trade-offs in data requirements, training stability, and model interpretability.
 
-- **Goal**: Use DQN to localize brain hemorrhages in CT scans via reinforcement learning.
-- **Approach**:
-  - Extract features using a pretrained **VGG16** network.
-  - Agent learns to move a bounding box toward hemorrhage regions using custom reward functions.
-  - Rewards include binary correctness, IoU-based difference, coordinate, and aspect/area penalties.
+## Authors
+- Eric Yang
+- Suraj Godithi
 
----
+## Key Features
 
-## Directory
-- `benchmark_unet.ipynb` contains the benchmark U-Net taken from [Kaggle](https://www.kaggle.com/code/ranjithkumarat/brain-stroke-detection-using-ct-images)
-- `RL_eps1.py` contains the most up-to-date version of the DQN agent, it's a script that can be easily tuned to output a saved model along with loss and reward plots
-- `evaluation.ipynb` contains methods used to easily evaluate the .keras model outputted by RL_eps1.py and visualize them
-- `DQN-GPU-Debug.ipynb` contains the second-most up-to-date version of the DQN agent; an updated version of its non-debugged counterpart
+- **DQN Agent**: 9-action bounding box manipulation (move, zoom, squash, trigger)
+- **State Representation**: VGG16 feature extraction + action history encoding
+- **Multiple Reward Functions**: IoU-based, Manhattan distance, coordinate-based feedback systems
+- **Comparative Baseline**: U-Net segmentation model for performance comparison
+- **Comprehensive Evaluation**: Systematic ablation studies across architectures and hyperparameters
 
-Older versions:
-- `DQN-GPU.ipynb` contains an updated version of DQN.ipynb compatible with GPUs
-- `DQN.ipynb` contains an old version of the DQN before adding GPU-compatibility, has all functions within it such as visualization and evaluation code
+## Technical Architecture
+
+### Deep Q-Network Implementation
+- **Feature Extraction**: Pre-trained VGG16 (fc1 layer, 4096-dim features)
+- **Network Architecture**: Two hidden layers (1024 units each) with ReLU activation
+- **Training**: Experience replay buffer, epsilon-greedy exploration, Adam optimizer
+- **Action Space**: 9 discrete actions for bounding box manipulation
+
+### U-Net Baseline
+- Standard U-Net architecture for medical image segmentation
+- Dice loss optimization with Jaccard coefficient evaluation
+- Fine-tuned on hemorrhage-specific dataset
+
+## Results & Key Findings
+
+- **Data Efficiency**: DQN requires less labeled data but demands extensive computational resources and reward engineering
+- **Training Stability**: U-Net shows more predictable convergence; DQN exhibits high variance in learning dynamics
+- **Interpretability**: DQN provides observable decision trajectories; U-Net offers traditional segmentation masks
+- **Performance Trade-offs**: "No free lunch" - choice between data curation (supervised) vs computational complexity (RL)
+
+## Technical Report
+
+For detailed methodology, experimental results, and analysis, see the full technical paper:
+📄 **[Technical Report](docs/DQN_Brain_Hemorrhage_Localization.pdf)**
+
+The paper includes:
+- Comprehensive literature review and motivation
+- Detailed experimental methodology
+- Systematic ablation studies across reward functions
+- Performance comparison and trade-off analysis
+- Future work recommendations
+
+## Installation & Usage
+
+### Requirements
+```bash
+pip install tensorflow
+pip install numpy pandas matplotlib
+pip install opencv-python
+pip install scikit-learn
+```
+
+### Running the Models
+
+To run the models, you'll need to modify the hyperparameters directly in the Python files:
+
+**DQN Training:**
+- Edit the `.py` file to set epochs, batch_size, and reward_type parameters
+- Common configurations used: epochs=50, batch_size=300, reward types include IoU-based, Manhattan distance, and coordinate-based
+- Run: `python [dqn_training_file].py`
+
+**U-Net Training:**
+- Modify parameters in the U-Net script as needed
+- Run: `python [unet_training_file].py`
+
+**Note**: Check the individual Python files for specific parameter settings and file names.
 
 ## Dataset
-- `hemorrhage_CT` contains all CTs with hemorrhages from the [Kaggle RSNA Intracranial Hemorrhage Detection Competition](https://www.kaggle.com/datasets/vbookshelf/computed-tomography-ct-images/data)
-- `mini_dataset` is a small (30 image) split off of hemorrhage_CT with 18 pre-split training and 12 testing images
+
+The project uses CT scan data with hemorrhage annotations. Due to medical data privacy requirements, the dataset is not included in this repository.
+
+## Hardware Requirements
+
+- **Development Environment**: High-end GPU cluster with enterprise-grade hardware
+- **Recommended**: High-end GPU with 16GB+ VRAM for efficient training  
+- **Minimum**: CUDA-compatible GPU with 8GB+ VRAM
+- Multi-GPU support implemented for large-scale experiments
+
+**Note**: Training times can be extensive - DQN experiments often required days of computation even on high-end hardware.
+
+## Key Insights for Production ML
+
+1. **Reward Engineering is Critical**: Simple, interpretable reward functions outperformed complex geometric penalties
+2. **Stability vs Flexibility**: Supervised methods offer stability; RL provides adaptability with higher computational cost
+3. **Medical AI Considerations**: Interpretability and expert validation essential for healthcare applications
+
+## Future Work
+
+- Implementation of imitation learning with expert demonstrations
+- Double Q-learning to mitigate overestimation bias
+- Extension to 3D volumetric analysis
+- Integration with clinical workflow systems
+
+## Citation
+
+If you use this work in your research, please cite:
+```
+Yang, E., & Godithi, S. (2025). DQN for Detecting Brain Hemorrhage: 
+A Comparative Study of Reinforcement Learning and Supervised Learning 
+Approaches in Medical Image Analysis.
+```
+
+---
+
+*This project was developed as part of DS340 coursework, demonstrating advanced machine learning techniques in medical imaging applications.*
